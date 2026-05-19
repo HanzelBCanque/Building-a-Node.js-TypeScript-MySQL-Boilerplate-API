@@ -44,6 +44,9 @@ function authenticate(req: any, res: any, next: any){
 function refreshToken(req: any, res: any, next: any){
     const token = req.cookies.refreshToken;
     const ipAddress = req.ip;
+
+    if (!token) return res.status(400).json({ message: 'Refresh token is required' });
+
     accountService.refreshToken({ token, ipAddress})
         .then(({ refreshToken, ...account}: any )=>{
             setTokenCookie(res, refreshToken);
@@ -218,11 +221,12 @@ function _delete(req: any, res: any, next: any){
 }
 
 function setTokenCookie(res: any, token: any){
+    const isProduction = process.env.NODE_ENV === 'production';
     const cookieOptions = {
         httpOnly: true,
         expires: new Date(Date.now() + 7*24*60*60*1000),
-        secure: process.env.COOKIE_SECURE === 'true' || process.env.NODE_ENV === 'production',
-        sameSite: (process.env.COOKIE_SAMESITE || (process.env.NODE_ENV === 'production' ? 'none' : 'lax')) as any
+        secure: isProduction,
+        sameSite: (isProduction ? 'none' : 'lax') as any
     };
     res.cookie('refreshToken', token, cookieOptions)
 }
