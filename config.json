@@ -1,10 +1,10 @@
 {
     "database":{
-        "host":"153.92.15.31",
+        "host":"localhost",
         "port":3306,
-        "user":"u875409848_canque",
-        "password":"2qW^sUg=M",
-        "database":"u875409848_canque"
+        "user":"root",
+        "password":"",
+        "database":"node_mysql_api"
     },
     "secret":"SUPER_SECRET_KEY_REPLACE_ME_IN_PRODUCTION",
     "emailFrom":"Senpaihanzel@gmail.com",
