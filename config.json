@@ -1,12 +1,12 @@
 {
     "database":{
-        "host":"localhost",
+        "host":"153.92.15.31",
         "port":3306,
-        "user":"root",
-        "password":"",
-        "database":"node_mysql_api"
+        "user":"u875409848_canque",
+        "password":"2qW^sUg=M",
+        "database":"u875409848_canque"
     },
-    "secret":"SUPER_SECRET_KEY_REPLACE_ME_IN_PRODUCTION",
+    "secret":"hanzelcute",
     "emailFrom":"no-reply@mail.octanity.net",
     "smtpOptions":{
         "host":"smtp.resend.com",
