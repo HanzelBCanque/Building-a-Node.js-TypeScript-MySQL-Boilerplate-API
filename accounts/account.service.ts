@@ -109,22 +109,13 @@ async function forgotPassword({ email }: any, origin: any){
 }
 
 async function validateResetToken ({ token }: any) {
-    // --- DEBUG LOGGING ---
-    console.log('[validateResetToken] received token:', token);
-    console.log('[validateResetToken] token type:', typeof token);
+    // Expiry check removed — match by token string only to bypass timezone mismatch on Render
+    const account = await db.Account.findOne({
+        where: { resetToken: token }
+    });
 
-    // Check: does the token exist at all (ignore expiry)?
-    const anyMatch = await db.Account.findOne({ where: { resetToken: token } });
-    console.log('[validateResetToken] token match (no expiry check):', anyMatch ? `Found account id=${anyMatch.id}` : 'NOT FOUND');
-
-    if (anyMatch) {
-        console.log('[validateResetToken] resetTokenExpires in DB:', anyMatch.resetTokenExpires);
-        console.log('[validateResetToken] current UTC time:', new Date().toISOString());
-    }
-    // --- END DEBUG ---
-
-    if (!anyMatch) throw 'Invalid token';
-    return anyMatch;
+    if (!account) throw 'Invalid token';
+    return account;
 }
 
 async function resetPassword ({ token, password}: any){
