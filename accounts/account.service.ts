@@ -109,14 +109,12 @@ async function forgotPassword({ email }: any, origin: any){
 }
 
 async function validateResetToken ({ token }: any) {
-    const account = await db.Account.findOne ({
-        where: {
-            resetToken: token,
-            resetTokenExpires: { [Op.gt]: sequelize.fn('NOW') } // Uses DB server clock to avoid timezone mismatch
-        }
+    // DEBUG: temporarily remove expiry check to isolate whether token lookup works
+    const account = await db.Account.findOne({
+        where: { resetToken: token }
     });
-    if (!account) throw 'Invalid token';
 
+    if (!account) throw 'Invalid token';
     return account;
 }
 
