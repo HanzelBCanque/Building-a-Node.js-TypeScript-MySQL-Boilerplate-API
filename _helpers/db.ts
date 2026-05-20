@@ -6,6 +6,7 @@ import accountModel from '../accounts/account.model';
 import refreshTokenModel from '../accounts/refresh-token.model';
 
 const db: any = {};
+export let sequelize: Sequelize;
 export default db;
 
 initialize();
@@ -23,7 +24,7 @@ async function initialize() {
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
     // Connect to DB using Sequelize
-    const sequelize = new Sequelize(database, user, password, { dialect: 'mysql', host, port });
+    sequelize = new Sequelize(database, user, password, { dialect: 'mysql', host, port });
 
     // Init Models
     db.Account = accountModel(sequelize);

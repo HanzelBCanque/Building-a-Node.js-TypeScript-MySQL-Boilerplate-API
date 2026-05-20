@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { Op } from 'sequelize';
 import sendEmail from '../_helpers/send-email';
-import db from '../_helpers/db';
+import db, { sequelize } from '../_helpers/db';
 import Role from '../_helpers/role';
 
 export default {
@@ -112,7 +112,7 @@ async function validateResetToken ({ token }: any) {
     const account = await db.Account.findOne ({
         where: {
             resetToken: token,
-            resetTokenExpires: { [Op.gt]: Date.now() }
+            resetTokenExpires: { [Op.gt]: sequelize.fn('NOW') } // Uses DB server clock to avoid timezone mismatch
         }
     });
     if (!account) throw 'Invalid token';

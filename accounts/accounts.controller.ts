@@ -221,14 +221,15 @@ function _delete(req: any, res: any, next: any){
 }
 
 function setTokenCookie(res: any, token: any){
-    const isProduction = process.env.NODE_ENV === 'production';
-    const cookieOptions = {
+    const cookieOptions: any = {
         httpOnly: true,
-        expires: new Date(Date.now() + 7*24*60*60*1000),
-        secure: isProduction,
-        sameSite: (isProduction ? 'none' : 'lax') as any
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+
+        // Forces lowercase strings ('lax') to prevent Node runtime crashes on Render
+        sameSite: (process.env.COOKIE_SAMESITE || 'lax').toLowerCase(),
+        secure: process.env.COOKIE_SECURE === 'true' || process.env.NODE_ENV === 'production'
     };
-    res.cookie('refreshToken', token, cookieOptions)
+    res.cookie('refreshToken', token, cookieOptions);
 }
 
 
